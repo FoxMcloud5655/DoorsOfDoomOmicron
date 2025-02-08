@@ -47,6 +47,8 @@ public class DoorsOfDoom implements Game, GameInterface {
 	public static final int EXIT_BONUS = 5000;
 	public static final int CROWN_POINT = 200;
 	public static final int SPRITE_DAMAGE = 25;
+	public static final float SFX_VOLUME = 1.0F;
+	public static final float MUSIC_VOLUME = 0.5F;
 	
 	public final int BUTTONS_X = 167; // 8 * 12 + 3;
 	public final int STATS_X = 97; // 8 * 12 + 3;
@@ -339,7 +341,7 @@ public class DoorsOfDoom implements Game, GameInterface {
 		buttons = new ButtonWidget(p, BUTTONS_X, 10, 73, 86);
 		run.init();
 		
-		if (musicOn()) sys.music(1, 0.3f, true);
+		if (musicOn()) sys.music(1, MUSIC_VOLUME, true);
 		
 		Callable<List<Action>> introOptions = () -> {
 			List<Action> list = new ArrayList<>();
@@ -566,7 +568,7 @@ public class DoorsOfDoom implements Game, GameInterface {
 		
 		Runnable onEnter = () -> {
 			sys.stopMusic();
-			sys.music(2, 0.3f, false);
+			sys.music(2, MUSIC_VOLUME, false);
 			//doSound(19, 0.8f, 1f);
 			
 			doFinalScoreAnimation(true);
@@ -577,7 +579,7 @@ public class DoorsOfDoom implements Game, GameInterface {
 		return new Step( onEnter, null, () -> Arrays.asList(
 			new Action("Play Again", () -> {
 				sys.stopMusic();
-				if (musicOn()) sys.music(1, 0.3f, true);
+				if (musicOn()) sys.music(1, MUSIC_VOLUME, true);
 				enterStep(INTRO);
 			})
 		));
@@ -596,7 +598,7 @@ public class DoorsOfDoom implements Game, GameInterface {
 		
 		return new Step( onEnter, null, () -> Arrays.asList(
 			new Action("Try Again", () -> { 
-				if (musicOn()) sys.music(1, 0.3f, true);
+				if (musicOn()) sys.music(1, MUSIC_VOLUME, true);
 				enterStep(INTRO);
 			})
 		));
@@ -653,7 +655,7 @@ public class DoorsOfDoom implements Game, GameInterface {
 		music = !musicOn();
 		sys.mem("MUSIC", music ? "ON" : "OFF");
 		if (music) {
-			sys.music(1, 0.3f, true);
+			sys.music(1, MUSIC_VOLUME, true);
 		} else {
 			sys.stopMusic();
 		}
@@ -709,7 +711,9 @@ public class DoorsOfDoom implements Game, GameInterface {
 	}
 	
 	public void doSound(int soundNum, float volume, float pitch) {
-		if (soundOn()) sys.sound(soundNum, volume, pitch);	
+		if (soundOn()) {
+			sys.sound(soundNum, volume * SFX_VOLUME, pitch);
+		}
 	}
 	
 	void grabLoot() {
