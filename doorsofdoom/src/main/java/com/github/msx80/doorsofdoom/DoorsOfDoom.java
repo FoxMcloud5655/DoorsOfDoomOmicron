@@ -1003,7 +1003,7 @@ public class DoorsOfDoom implements Game, GameInterface {
 	
 	@Override
 	public SysConfig sysConfig() {
-		return new SysConfig(240, 136, VirtualScreenMode.FILL_SIDE, "Doors of Doom", "doorsofdoom");
+		return new SysConfig(240, 136, VirtualScreenMode.SCALED, "Doors of Doom", "doorsofdoom");
 	}
 	
 	@Override
